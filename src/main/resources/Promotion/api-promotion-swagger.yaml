@@ -1,0 +1,425 @@
+openapi: 3.0.1
+info:
+  title: API Promotion
+  description: Cette API Permet de consulter les informations sur les campagnes promotionnelles et les actions commerciales que se soit en terme de remise, réduction ou gratuitié.
+  contact:
+    name: Squad DIGITAL & DATA
+    email: squad.digital@labelvie.ma
+  version: 1.1.2
+servers:
+  - url: http://172.24.30.22:8075
+    description: Serveur de dev
+  - url: http://172.16.3.150:8075
+    description: Serveur de production
+tags:
+  - name: CampagnePromotionnelle
+    description: Opérations autours de la Campagne promotionnelle
+  - name: ActionCommerciale
+    description: Opérations autours de l'action commerciale
+paths:
+  /v1/campagnes-promotionnelles:
+    get:
+      tags:
+        - CampagnePromotionnelle
+      summary: Consulter les informations des campagnes promotionnelles dans une période donnée, filtrées par code caisse.
+      operationId: consulterCampagnesPromotionnelles
+      parameters:
+        - name: Data-Source
+          in: header
+          description: LBV source de données label'Vie, ATC source de données Atacadao
+          required: false
+          schema:
+            type: string
+            default: LBV
+            enum:
+              - LBV
+              - ATC
+        - name: codeCaisse
+          in: query
+          description: Code caisse (EAN) correspondant à un article
+          required: false
+          schema:
+            type: string
+          example: 7612345678900
+        - name: dateDebut
+          in: query
+          description: La date de début de l'interval souhaité
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2023-04-15'
+        - name: dateFin
+          in: query
+          description: La date de fin de l'interval souhaité
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2023-04-25'
+        - name: page
+          in: query
+          description: Numéro de page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: size
+          in: query
+          description: Nombre d'élément par page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 50
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsulterCampagnesPromotionnellesResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '400'
+                status: Bad Request
+                message: Bad Request
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+        '401':
+          description: ' Unauthorized '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '401'
+                status: Unauthorized
+                message: Unauthorized
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '403'
+                status: Forbidden
+                message: Forbidden
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '500'
+                status: Internal Server Error
+                message: Internal Server Error
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+  /v1/campagnes-promotionnelles/actions-commerciales:
+    get:
+      tags:
+        - ActionCommerciale
+      summary: Consulter les informations des actions commerciales dans une période donnée, filtrées par code caisse.
+      operationId: consulterActionsCommerciales
+      parameters:
+        - name: Data-Source
+          in: header
+          description: LBV source de données label'Vie, ATC source de données Atacadao
+          required: false
+          schema:
+            type: string
+            default: LBV
+            enum:
+              - LBV
+              - ATC
+        - name: codeCaisse
+          in: query
+          description: Code caisse (EAN) correspondant à un article
+          required: true
+          schema:
+            type: string
+          example: 7612345678900
+        - name: dateDebut
+          in: query
+          description: La date de début de l'interval souhaité
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2023-04-15'
+        - name: dateFin
+          in: query
+          description: La date de fin de l'interval souhaité
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2023-05-24'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsulterActionsCommercialesResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '400'
+                status: Bad Request
+                message: Bad Request
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+        '401':
+          description: ' Unauthorized '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '401'
+                status: Unauthorized
+                message: Unauthorized
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '403'
+                status: Forbidden
+                message: Forbidden
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: '500'
+                status: Internal Server Error
+                message: Internal Server Error
+                parameters: []
+                horodatage: '2023-03-24T10:46:10.466Z'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code http de l'erreur
+        status:
+          type: string
+          description: Statut par defaut du code http
+        message:
+          type: string
+          description: Detail de l'erreur
+        parameters:
+          type: array
+          items:
+            type: string
+        horodatage:
+          type: string
+          format: date-time
+    ActionCommercialeSimplifiee:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Le type d'action commerciale à savoir une remise, réduction ou gratuité
+          enum:
+            - REMISE
+            - REDUCTION
+            - GRATUITE
+        conditions:
+          type: array
+          description: La condition requise pour bénéficier de la promotion
+          items:
+            $ref: '#/components/schemas/Condition'
+        contenu:
+          $ref: '#/components/schemas/Contenu'
+      description: Action commerciale
+    Article:
+      type: object
+      properties:
+        codeCaisse:
+          type: string
+          description: Le code EAN de l'article
+          example: '6111207000121'
+        libelle:
+          type: string
+          description: Le libellé de l'article
+          example: CAFE GRAIN AMBASSADEUR DUBOIS
+      description: Information sur les articles gratuits
+    CampagnePromotionnelle:
+      type: object
+      properties:
+        titre:
+          type: string
+          description: Titre de la campagne promotionnelle
+          example: Campagne Gratuité lot complexe
+        numero:
+          type: integer
+          description: Numéro de la campagne promotionnelle
+          format: int64
+          example: 855
+        dateDebutPromo:
+          type: string
+          description: La date de début de la promotion
+          format: date
+          example: '2023-04-15'
+        dateFinPromo:
+          type: string
+          description: La date de la fin de la promotion
+          format: date
+          example: '2023-04-30'
+        magasinsConcernes:
+          type: array
+          description: Liste des magasins concernés par cette campagne promotionelle
+          items:
+            $ref: '#/components/schemas/Magasin'
+        actionsCommerciales:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionCommercialeSimplifiee'
+    Condition:
+      type: object
+      properties:
+        article:
+          $ref: '#/components/schemas/Article'
+        quantite:
+          type: integer
+          description: La quantité requise pour bénéficier de la promotion
+          format: int32
+          example: 5
+        valeur:
+          type: number
+          description: La valeur requise pour bénéficier de la promotion
+          example: 1000.5
+      description: La condition requise pour bénéficier de la promotion
+    ConsulterCampagnesPromotionnellesResponse:
+      type: object
+      properties:
+        campagnesPromotionnelles:
+          type: array
+          items:
+            $ref: '#/components/schemas/CampagnePromotionnelle'
+        totalPages:
+          type: integer
+          description: Nombre total des pages retournées
+          format: int32
+          example: 30
+        totalPageElements:
+          type: integer
+          description: Nombre d'éléments par page
+          format: int32
+          example: 50
+        totalElements:
+          type: integer
+          description: Nombre d'éléments retournés
+          format: int64
+          example: 1500
+    Contenu:
+      type: object
+      properties:
+        valeur:
+          type: number
+          description: Représente le taux de remise ou la valeur de réduction
+        quantite:
+          type: integer
+          description: Représente la quantité de l'avantage
+          format: int32
+        articlesConcernes:
+          type: array
+          description: Information sur les articles gratuits
+          items:
+            $ref: '#/components/schemas/Article'
+    Magasin:
+      type: object
+      properties:
+        codeMagasin:
+          type: string
+          description: Code du magasin
+          example: '500'
+        libelleMagasin:
+          type: string
+          description: Libellé du magasin
+          example: Ain sbeaa
+      description: Liste des magasins concernés par cette campagne promotionelle
+    ActionCommercialeGlobale:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Le type d'action commerciale à savoir une remise, réduction ou gratuité
+          enum:
+            - REMISE
+            - REDUCTION
+            - GRATUITE
+        conditions:
+          type: array
+          description: La condition requise pour bénéficier de la promotion
+          items:
+            $ref: '#/components/schemas/Condition'
+        contenu:
+          $ref: '#/components/schemas/Contenu'
+        campagnePromotionnelle:
+          $ref: '#/components/schemas/CampagnePromotionnelleCommon'
+      description: Action commerciale
+    CampagnePromotionnelleCommon:
+      type: object
+      properties:
+        titre:
+          type: string
+          description: Titre de la campagne promotionnelle
+          example: Campagne Gratuité lot complexe
+        numero:
+          type: integer
+          description: Numéro de la campagne promotionnelle
+          format: int64
+          example: 855
+        dateDebutPromo:
+          type: string
+          description: La date de début de la promotion
+          format: date
+          example: '2023-04-15'
+        dateFinPromo:
+          type: string
+          description: La date de la fin de la promotion
+          format: date
+          example: '2023-04-30'
+        magasinsConcernes:
+          type: array
+          description: Liste des magasins concernés par cette campagne promotionelle
+          items:
+            $ref: '#/components/schemas/Magasin'
+    ConsulterActionsCommercialesResponse:
+      type: object
+      properties:
+        actionsCommerciales:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionCommercialeGlobale'
